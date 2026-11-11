@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#101513" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='5' y='5' width='54' height='54' fill='%23101513' stroke='%23d2bd84' stroke-width='2'/%3E%3Ctext x='32' y='46' text-anchor='middle' fill='%23d2bd84' font-family='sans-serif' font-size='42' font-weight='bold'%3EB%3C/text%3E%3C/svg%3E" />
+  <title>BLACK TIDE — Nightfall Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="game" aria-label="Black Tide 3D first-person campaign"></canvas>
+    <div class="film-grain"></div>
+    <div class="vignette"></div>
+
+    <section class="hud" id="hud" aria-live="polite">
+      <header class="topline">
+        <div class="mission-mark"><span class="mark-icon">B</span><div><b>BLACK TIDE</b><small>JOINT OPERATIONS · 04:17 LOCAL</small></div></div>
+        <div class="mission-name"><span>OPERATION</span><b>NIGHTFALL PROTOCOL</b></div>
+        <div class="comms"><i></i><span>COMMS SECURE</span></div>
+      </header>
+      <div class="objective" id="objective"><span class="obj-index">01</span><div><small>PRIMARY OBJECTIVE</small><b>SECURE THE COMPOUND</b><span id="objective-detail">Neutralize hostiles · 0 / 5</span></div><span class="obj-chevron">⌄</span></div>
+      <div class="threat-label" id="threat-label"><i></i> HOSTILE CONTACT</div>
+      <div class="center-reticle" id="reticle"><span></span><i></i><span></span><b></b><em></em></div>
+      <div class="hit-marker" id="hit-marker">×</div>
+      <div class="damage-flash" id="damage-flash"></div>
+      <div class="bottom-hud">
+        <div class="vitals"><div class="health-emblem">+</div><div class="health-copy"><small>OPERATOR</small><b id="health-value">100</b></div><div class="health-track"><i id="health-bar"></i></div></div>
+        <div class="controls-hint" id="controls-hint"><span>W A S D</span> MOVE <i>·</i> <span>MOUSE</span> AIM <i>·</i> <span>CLICK</span> FIRE</div>
+        <div class="weapon-info"><div class="weapon-name"><small>PRIMARY WEAPON</small><b>MK18 <span>MOD 1</span></b><div class="weapon-mode"><i></i> SEMI-AUTO <b>·</b> 5.56×45</div></div><div class="ammo"><strong id="ammo-current">30</strong><span>/</span><b id="ammo-reserve">120</b><small>AMMO</small></div><div class="weapon-silhouette">⌁</div></div>
+      </div>
+      <div class="toast" id="toast"></div>
+      <div class="reload-indicator" id="reload-indicator">RELOADING <i></i></div>
+      <div class="mobile-controls" id="mobile-controls">
+        <div class="stick-zone" id="stick-zone"><div class="stick-base"><div class="stick-knob" id="stick-knob"></div></div><small>MOVE</small></div>
+        <button class="touch-button fire-button" id="fire-button" aria-label="Fire weapon"><span>FIRE</span><i>⌖</i></button>
+        <button class="touch-button reload-button" id="reload-button" aria-label="Reload">↻<small>RELOAD</small></button>
+      </div>
+    </section>
+
+    <section class="screen intro-screen" id="intro-screen">
+      <div class="intro-top"><div class="brand-lockup"><span class="brand-symbol">B</span><span>BLACK<br><b>TIDE</b></span></div><span class="edition">SINGLE PLAYER CAMPAIGN <i>／</i> CHAPTER 01</span></div>
+      <div class="intro-copy"><div class="eyebrow"><i></i> FIELD REPORT  //  17 NOVEMBER 2025</div><h1>NIGHTFALL<br><em>PROTOCOL</em></h1><p>A covert insertion. A silent compound.<br>One operator between the city and the dark.</p><div class="briefing"><span>MISSION BRIEFING</span><p>Intel places five armed insurgents inside this coastal relay station. Push through the perimeter, secure the compound, and leave no one behind.</p><div class="briefing-meta"><span><b>LOCATION</b> PORT AZURE, NORTH AFRICA</span><span><b>THREAT</b> HIGH <i>◆◆◆◇</i></span></div></div><button class="deploy-button" id="start-button"><span>DEPLOY</span><b>→</b></button><div class="input-note" id="input-note">CLICK TO LOCK MOUSE <i>·</i> ESC TO PAUSE</div></div>
+      <div class="intro-side"><span class="side-line"></span><span>01</span><span>05</span><span class="side-caption">THE DARK<br>IS YOUR COVER</span></div>
+      <div class="intro-footer"><span>BLACK TIDE // TACTICAL SYSTEMS</span><span>BUILD 01.04.17 <i>·</i> UNCLASSIFIED</span></div>
+    </section>
+
+    <section class="screen pause-screen hidden" id="pause-screen"><div class="pause-panel"><span class="eyebrow">BLACK TIDE // FIELD CONTROL</span><h2>MISSION<br><em>PAUSED</em></h2><p>Take a breath, operator.</p><button class="deploy-button" id="resume-button"><span>RESUME MISSION</span><b>→</b></button><small>ESC TO RESUME <i>·</i> YOUR PROGRESS IS SAVED</small></div></section>
+    <section class="screen result-screen hidden" id="result-screen"><div class="result-panel"><span class="eyebrow">OPERATION NIGHTFALL // COMPLETE</span><h2>AREA<br><em>SECURED</em></h2><p>Compound clear. All hostiles neutralized.<br>Good work, operator.</p><div class="result-stats"><span><b id="result-hits">05</b> HOSTILES</span><span><b id="result-health">100%</b> VITALS</span><span><b>04:17</b> OP TIME</span></div><button class="deploy-button" id="again-button"><span>RUN IT AGAIN</span><b>↻</b></button></div></section>
+    <div class="loading-screen" id="loading-screen"><div class="loading-mark">B</div><span>INITIALIZING FIELD SYSTEMS</span><i><b></b></i></div>
+  </main>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
